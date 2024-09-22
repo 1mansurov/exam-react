@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import './LoginForm.css';
+import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,10 +30,11 @@ const LoginForm = () => {
       }
 
       const data = await response.json();
-      toast.success("Login successful! Token: " + data.token);
-
+      toast.success("Login successful!");
+      navigate('/');
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error);
+      console.log(error);
     }
   };
 

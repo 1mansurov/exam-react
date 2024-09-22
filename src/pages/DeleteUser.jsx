@@ -1,42 +1,34 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
-import './DeleteUser.css';
 
-const DeleteUser = () => {
-  const [userId, setUserId] = useState('');
-
+const DeleteUser = ({user}) => {
   const handleDelete = async () => {
-    if (!userId) {
-      toast.error("Please enter a user ID!");
+    if (!user.id) {
+      toast.error('Please provide a user ID');
       return;
     }
 
     try {
-      const response = await fetch(`https://reqres.in/api/users/${userId}`, {
+      const response = await fetch(`https://reqres.in/api/users/${user.id}`, {
         method: 'DELETE',
       });
 
-      if (!response.ok) {
+      if (response.status !== 204) {
         throw new Error('Failed to delete user');
       }
-
-      toast.success("User deleted successfully!");
-      setUserId(''); 
+      toast.success(`User ${user.first_name} deleted successfully!`);
     } catch (error) {
       toast.error(error.message);
     }
   };
 
+  console.log(user);
+
   return (
     <div className="delete-user-container">
-      <h1>Delete User</h1>
-      <input 
-        type="text" 
-        value={userId} 
-        onChange={(e) => setUserId(e.target.value)} 
-        placeholder="Enter User ID" 
-      />
-      <button onClick={handleDelete} className="delete-button">Delete User</button>
+      <button onClick={handleDelete} className="submit-button">
+        Delete User
+      </button>
     </div>
   );
 };
